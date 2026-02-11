@@ -1,0 +1,379 @@
+
+.dashboard-container { padding: 40px 20px; max-width: 1400px; margin: 0 auto; }
+.dashboard-header { background: var(--bg-secondary); padding: 30px; border-radius: 16px; margin-bottom: 40px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.dashboard-header h2 { margin: 0; }
+.dashboard-header button { padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; }
+.dashboard-header button:hover { opacity: 0.8; }
+.back-link { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+.back-link:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.player-info { flex: 1; }
+.player-info h1 { font-size: 2rem; margin-bottom: 12px; }
+.player-summary { background: var(--bg-secondary); padding: 24px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 30px; }
+.player-summary p { margin: 12px 0; font-size: 1rem; }
+.deck-section { background: var(--bg-secondary); padding: 24px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 30px; }
+.deck-section h3 { margin-top: 0; margin-bottom: 20px; font-size: 1.5rem; }
+/* Deck Cards Grid */
+.deck-cards-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.deck-card { 
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.deck-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Rarity-specific border colors */
+.deck-card.rarity-common { border-color: #919191; }
+.deck-card.rarity-rare { border-color: #4ebdff; }
+.deck-card.rarity-epic { border-color: #ab39f5; }
+.deck-card.rarity-legendary { border-color: #ffb637; }
+.deck-card.rarity-champion { border-color: #ff6b6b; }
+
+/* Card Image Container */
+.card-image-container {
+  width: 100%;
+  height: 140px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.card-image-placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Card Info Section */
+.card-info {
+  padding: 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-info h4 {
+  margin: 0 0 8px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* Card Stats */
+.card-stats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.card-stats .stat {
+  background: rgba(102, 126, 234, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--text-primary);
+}
+
+/* Card Details */
+.card-details {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.rarity-badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+}
+
+.rarity-badge.common { background: #919191; }
+.rarity-badge.rare { background: #4ebdff; }
+.rarity-badge.epic { background: #ab39f5; }
+.rarity-badge.legendary { background: #ffb637; color: #333; }
+.rarity-badge.champion { background: #ff6b6b; }
+
+.star-level {
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 3px;
+}
+
+.card-count {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: auto;
+}
+
+/* Deck Statistics Section */
+.deck-stats-section {
+  background: var(--bg-secondary);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 30px;
+}
+
+.deck-stats-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.stat-item {
+  background: var(--bg-tertiary);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Support Cards Section */
+.support-cards-section {
+  background: var(--bg-secondary);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 30px;
+}
+
+.support-cards-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.support-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.support-card {
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.support-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.support-card.rarity-common { border-color: #919191; }
+.support-card.rarity-rare { border-color: #4ebdff; }
+.support-card.rarity-epic { border-color: #ab39f5; }
+.support-card.rarity-legendary { border-color: #ffb637; }
+
+.card-image-container.small {
+  height: 100px;
+}
+
+.support-card .card-info {
+  padding: 10px;
+}
+
+.support-card .card-info h5 {
+  margin: 0 0 6px 0;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Favorite Card Section */
+.favorite-card-section {
+  background: var(--bg-secondary);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 30px;
+}
+
+.favorite-card-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.favorite-card-container {
+  display: flex;
+  justify-content: center;
+}
+
+.favorite-card {
+  background: var(--bg-tertiary);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 3px solid var(--border-color);
+  display: flex;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.favorite-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.favorite-card.rarity-common { border-color: #919191; }
+.favorite-card.rarity-rare { border-color: #4ebdff; }
+.favorite-card.rarity-epic { border-color: #ab39f5; }
+.favorite-card.rarity-legendary { border-color: #ffb637; }
+.favorite-card.rarity-champion { border-color: #ff6b6b; }
+
+.card-image-container.large {
+  width: 200px;
+  min-width: 200px;
+  height: 200px;
+}
+
+.favorite-card-info {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.favorite-card-info h2 {
+  margin: 0 0 16px 0;
+  font-size: 1.8rem;
+}
+
+.card-details-large {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.elixir-cost {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.favorite-card-info p {
+  margin: 8px 0;
+  color: var(--text-secondary);
+}
+.deck-unavailable { background: #f0f4ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px; color: #333; }
+.deck-unavailable p { margin: 12px 0; }
+.deck-unavailable a { color: #667eea; text-decoration: none; font-weight: 500; }
+.deck-unavailable a:hover { text-decoration: underline; }
+.analysis-section { background: var(--bg-secondary); padding: 24px; border-radius: 12px; border: 1px solid var(--border-color); }
+.analysis-section h3 { margin-top: 0; margin-bottom: 20px; font-size: 1.5rem; }
+.analysis-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.analysis-list > div { background: var(--bg-tertiary); padding: 16px; border-radius: 8px; }
+.analysis-list h4 { margin-top: 0; margin-bottom: 12px; }
+.analysis-list ul { margin: 0; padding-left: 20px; }
+.analysis-list li { margin-bottom: 8px; }
+.player-stats { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 8px; }
+.player-tag { padding: 4px 12px; background: var(--bg-tertiary); border-radius: 6px; font-family: monospace; }
+.trophy-count { display: flex; align-items: center; gap: 6px; }
+.arena-name { color: var(--text-secondary); }
+.overall-rating { text-align: center; }
+.rating-badge { padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; }
+.rating-badge.excellent { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+.rating-badge.good { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+.rating-badge.average { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+.rating-badge.poor { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+.dashboard-section { margin-bottom: 40px; }
+.section-title { font-size: 1.75rem; margin-bottom: 24px; }
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+.metric-card { background: var(--bg-secondary); padding: 24px; border-radius: 12px; text-align: center; border: 1px solid var(--border-color); }
+.metric-value { font-size: 2.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 8px; }
+.metric-label { color: var(--text-secondary); font-size: 0.9rem; }
+.dashboard-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 20px; font-size: 1.2rem; }
+.dashboard-error { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 20px; color: var(--error-color); text-align: center; }
+.dashboard-error button { padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; }
+.dashboard-error button:hover { opacity: 0.8; }
+.loading-screen, .error-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 20px; }
+.error-icon-large { width: 64px; height: 64px; color: var(--error-color); }
+
+/* Alternative Card Collection Section */
+.card-collection-section {
+  background: var(--bg-secondary);
+  padding: 24px;
+  border-radius: 12px;
+  border: 2px dashed var(--primary-color);
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+.card-collection-section h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+@media (max-width: 768px) { .dashboard-header { flex-direction: column; align-items: flex-start; } .metrics-grid { grid-template-columns: repeat(2, 1fr); } .deck-cards-grid { grid-template-columns: repeat(2, 1fr); } .analysis-list { grid-template-columns: 1fr; } }

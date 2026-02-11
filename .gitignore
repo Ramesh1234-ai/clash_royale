@@ -1,0 +1,32 @@
+# Environment variables - contains sensitive API keys and credentials
+.env
+
+# Backend directory
+backend/
+
+# Output files
+output.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Node/Frontend
+node_modules/
+dist/
+.vite/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

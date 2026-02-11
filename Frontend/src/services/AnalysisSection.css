@@ -1,0 +1,27 @@
+.analysis-container { background: var(--bg-secondary); border-radius: 16px; border: 1px solid var(--border-color); overflow: hidden; }
+.analysis-tabs { display: flex; border-bottom: 1px solid var(--border-color); }
+.tab { flex: 1; padding: 16px 24px; background: transparent; border: none; color: var(--text-secondary); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.tab:hover { background: var(--bg-tertiary); }
+.tab.active { color: var(--text-primary); background: var(--bg-primary); border-bottom: 2px solid var(--primary-color); }
+.tab-content { padding: 30px; }
+.items-list { display: flex; flex-direction: column; gap: 20px; }
+.analysis-item { padding: 20px; background: var(--bg-primary); border-radius: 12px; border: 1px solid var(--border-color); }
+.item-header { display: flex; gap: 16px; margin-bottom: 12px; }
+.item-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
+.strength-icon { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+.weakness-icon { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+.suggestion-icon { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+.item-title-group { flex: 1; }
+.item-title { font-size: 1.1rem; margin-bottom: 4px; }
+.item-meta { display: flex; gap: 8px; align-items: center; }
+.item-category { color: var(--text-tertiary); font-size: 0.85rem; }
+.severity-badge { padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; }
+.item-description { color: var(--text-secondary); line-height: 1.6; }
+.suggestion-details { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+.suggestion-section h4 { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 8px; }
+.card-suggestions { display: flex; flex-wrap: wrap; gap: 8px; }
+.suggested-card { padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; }
+.suggested-card.add { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+.suggested-card.remove { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+.empty-state { text-align: center; padding: 40px; color: var(--text-tertiary); }
+@media (max-width: 768px) { .analysis-tabs { flex-direction: column; } .tab { justify-content: flex-start; } }
