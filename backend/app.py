@@ -8,6 +8,7 @@ from flask_jwt_extended import JWTManager
 from config import get_config
 from models import db
 import os
+import requests
 
 
 def create_app(config_name=None):
@@ -63,10 +64,14 @@ def create_app(config_name=None):
                 'roast': '/api/roast'
             }
         })
-@app.route('/debug/ip')
-def get_ip():
-    ip = requests.get('https://api.ipify.org').text
-    return {"server_ip": ip}
+    
+    # Debug endpoint to get server IP
+    @app.route('/debug/ip')
+    def get_ip():
+        """Get server IP address"""
+        ip = requests.get('https://api.ipify.org').text
+        return {"server_ip": ip}
+    
     # Health check
     @app.route('/health')
     def health():
@@ -82,7 +87,6 @@ def get_ip():
             'status': 'healthy' if db_status == 'healthy' else 'unhealthy',
             'database': db_status
         })
-
 
     @app.route('/debug/cr_test', methods=['GET'])
     def debug_cr_test():
