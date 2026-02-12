@@ -63,7 +63,10 @@ def create_app(config_name=None):
                 'roast': '/api/roast'
             }
         })
-    
+@app.route('/debug/ip')
+def get_ip():
+    ip = requests.get('https://api.ipify.org').text
+    return {"server_ip": ip}
     # Health check
     @app.route('/health')
     def health():
