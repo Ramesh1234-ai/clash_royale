@@ -4,10 +4,13 @@ Handles player-related database operations
 """
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
+import logging
 from flask import current_app
 from models import db, Player, Deck, DeckCard, Card, DeckAnalysis
 from services.clash_royale import get_api_service, ClashRoyaleAPIError
 from services.deck_analyzer import get_analyzer
+
+logger = logging.getLogger(__name__)
 
 
 class PlayerService:
@@ -47,7 +50,17 @@ class PlayerService:
         if should_fetch:
             # Fetch from API
             api_service = get_api_service()
-            api_data = api_service.get_player(player_tag)
+            try:
+                logger.info(f"Fetching player data for {player_tag} from API...")
+                api_data = api_service.get_player(player_tag)
+                logger.info(f"Successfully fetched player data for {player_tag}")
+            except ClashRoyaleAPIError as e:
+                logger.error(f"API Error fetching player {player_tag}: {str(e)}")
+                raise
+            except Exception as e:
+                logger.error(f"Unexpected error fetching player {player_tag}: {str(e)}")
+                raise
+            
             player_data = api_service.parse_player_data(api_data)
             
             # Store extra fields from API
