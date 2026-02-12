@@ -56,7 +56,9 @@ class Config:
     CARDS_CACHE_DURATION = int(os.getenv('CARDS_CACHE_DURATION', 86400))  # 24 hours
     
     # CORS Configuration
-    CORS_ORIGINS = os.getenv('CORS_ORIGINS', 'http://localhost:3000,http://localhost:5173,http://localhost:5174').split(',')
+    # On production (unified service): CORS not needed since frontend is same origin
+    # On development: allow localhost dev server ports and external frontend URLs
+    CORS_ORIGINS = os.getenv('CORS_ORIGINS', 'http://localhost:3000,http://localhost:5173,http://localhost:5174,http://127.0.0.1:3000,http://127.0.0.1:5173,https://deploysus.vercel.app').split(',') if os.getenv('FLASK_ENV', 'development') == 'development' else os.getenv('CORS_ORIGINS', 'https://deploysus.vercel.app').split(',')
     
     # Pagination
     ITEMS_PER_PAGE = int(os.getenv('ITEMS_PER_PAGE', 20))
