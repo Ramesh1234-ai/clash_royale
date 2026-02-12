@@ -24,7 +24,7 @@ class ClashRoyaleAPIService:
             base_url: Base URL for the API
             timeout: Request timeout in seconds
         """
-        self.api_key = api_key or current_app.config.get('CLASH_ROYALE_API_KEY')
+        self.api_key = (api_key or current_app.config.get('CLASH_ROYALE_API_KEY', '')).strip()
         self.base_url = base_url or current_app.config.get('CLASH_ROYALE_API_BASE_URL')
         self.timeout = timeout or current_app.config.get('CLASH_ROYALE_API_TIMEOUT', 10)
         
