@@ -144,19 +144,41 @@ class Player(db.Model):
             current_deck = Deck.query.filter_by(player_id=self.id, is_current_deck=True).first()
             if current_deck:
                 deck_cards = DeckCard.query.filter_by(deck_id=current_deck.id).order_by(DeckCard.position).all()
-                player_dict['current_deck'] = [
+                player_dict['currentDeck'] = [
                     {
                         'name': dc.card.name,
                         'card_id': dc.card.card_id,
                         'level': dc.card_level,
-                        'elixir_cost': dc.card.elixir_cost,
-                        'icon_url': dc.card.icon_url,
-                        'id': dc.card.id
+                        'elixirCost': dc.card.elixir_cost,
+                        'iconUrls': {
+                            'medium': dc.card.icon_url,
+                        },
+                        'id': dc.card.id,
+                        'rarity': dc.card.rarity,
+                        'card_type': dc.card.card_type
                     }
                     for dc in deck_cards
                 ]
             else:
-                player_dict['current_deck'] = []
+                player_dict['currentDeck'] = []
+            
+            # Also include all cards as a fallback
+            all_cards = Card.query.all()
+            player_dict['cards'] = [
+                {
+                    'name': card.name,
+                    'card_id': card.card_id,
+                    'elixirCost': card.elixir_cost,
+                    'iconUrls': {
+                        'medium': card.icon_url,
+                    },
+                    'id': card.id,
+                    'rarity': card.rarity,
+                    'card_type': card.card_type,
+                    'maxLevel': card.max_level
+                }
+                for card in all_cards
+            ]
         
         return player_dict
     

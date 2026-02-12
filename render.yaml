@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: tuxhuz-backend
+    env: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && gunicorn -w 4 -b 0.0.0.0:$PORT wsgi:app
+    plan: free
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: CLASH_ROYALE_API_KEY
+        sync: false
+      - key: PORT
+        value: "5000"
+
+  - type: static
+    name: tuxhuz-frontend
+    buildCommand: cd Frontend && npm install && npm run build
+    staticPublishPath: Frontend/dist
+    plan: free
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: "https://tuxhuz-backend.onrender.com/api"

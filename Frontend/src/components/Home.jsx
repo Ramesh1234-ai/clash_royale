@@ -72,6 +72,7 @@ function Home() {
               className="analyze-button"
               disabled={loading}
             >
+              
               {loading ? (
                 <>
                   <span className="spinner"></span>

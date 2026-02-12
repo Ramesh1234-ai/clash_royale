@@ -127,6 +127,21 @@ export const cardsAPI = {
 };
 
 /**
+ * Roast API endpoints
+ */
+export const roastAPI = {
+  /**
+   * Generate roast for a player
+   * @param {string} playerTag - Player tag (with or without #)
+   * @param {string} intensity - Roast intensity: 'fun', 'savage', or 'nuclear'
+   */
+  generateRoast: async (playerTag, intensity = 'fun') => {
+    const tag = playerTag.startsWith('#') ? playerTag.substring(1) : playerTag;
+    return fetchAPI(`/roast/${tag}?intensity=${intensity}`);
+  },
+};
+
+/**
  * Auth API endpoints
  */
 export const authAPI = {
@@ -213,5 +228,6 @@ export default {
   playerAPI,
   cardsAPI,
   authAPI,
+  roastAPI,
   isAuthenticated,
 };

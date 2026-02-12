@@ -107,17 +107,19 @@ def sync_cards():
                 card.max_level = parsed_card['max_level']
                 card.icon_url = parsed_card['icon_url']
                 card.elixir_cost = parsed_card.get('elixir_cost', card.elixir_cost)
+                card.rarity = parsed_card.get('rarity', card.rarity)
+                card.card_type = parsed_card.get('card_type', card.card_type)
                 updated_count += 1
             else:
                 # Create new card (with default analysis attributes)
                 card = Card(
                     card_id=parsed_card['card_id'],
                     name=parsed_card['name'],
-                    max_level=parsed_card['max_level'],
-                    icon_url=parsed_card['icon_url'],
+                    max_level=parsed_card.get('max_level', 14),
+                    icon_url=parsed_card.get('icon_url', ''),
                     elixir_cost=parsed_card.get('elixir_cost', 0),
-                    rarity='common',  # Default, should be updated in schema
-                    card_type='troop'  # Default, should be updated in schema
+                    rarity=parsed_card.get('rarity', 'common'),
+                    card_type=parsed_card.get('card_type', 'troop')
                 )
                 db.session.add(card)
                 synced_count += 1

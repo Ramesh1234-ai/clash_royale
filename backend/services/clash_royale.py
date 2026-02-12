@@ -171,6 +171,21 @@ class ClashRoyaleAPIService:
         arena = api_response.get('arena', {})
         clan = api_response.get('clan', {})
         
+        # Extract current favorite card
+        favorite_card = api_response.get('currentFavouriteCard', {})
+        current_favourite_card = None
+        if favorite_card:
+            current_favourite_card = {
+                'name': favorite_card.get('name', ''),
+                'card_id': favorite_card.get('id'),
+                'rarity': favorite_card.get('rarity', '').lower(),
+                'elixirCost': favorite_card.get('elixirCost', 0),
+                'maxLevel': favorite_card.get('maxLevel', 14),
+                'iconUrls': {
+                    'medium': favorite_card.get('iconUrls', {}).get('medium', '')
+                }
+            }
+        
         return {
             'player_tag': api_response.get('tag', ''),
             'name': api_response.get('name', ''),
@@ -185,7 +200,8 @@ class ClashRoyaleAPIService:
             'clan_name': clan.get('name'),
             'clan_tag': clan.get('tag'),
             'exp_level': api_response.get('expLevel', 1),
-            'current_deck': self.extract_current_deck(api_response)
+            'current_deck': self.extract_current_deck(api_response),
+            'current_favourite_card': current_favourite_card,
         }
     
     def parse_card_data(self, card_api_data: Dict) -> Dict:
@@ -198,12 +214,38 @@ class ClashRoyaleAPIService:
         Returns:
             Dict: Parsed card data
         """
+        # Map card type from API names to standardized names
+        card_type_map = {
+            'Troop': 'troop',
+            'Spell': 'spell',
+            'Building': 'building',
+        }
+        
+        # Map rarity from API names to standardized names
+        rarity_map = {
+            'Common': 'common',
+            'Rare': 'rare',
+            'Epic': 'epic',
+            'Legendary': 'legendary',
+            'Champion': 'champion',
+        }
+        
+        # Get card type from API (type field)
+        card_type_api = card_api_data.get('type', 'Troop')
+        card_type = card_type_map.get(card_type_api, 'troop')
+        
+        # Get rarity from API
+        rarity_api = card_api_data.get('rarity', 'Common')
+        rarity = rarity_map.get(rarity_api, 'common')
+        
         return {
             'card_id': card_api_data.get('id'),
             'name': card_api_data.get('name'),
             'max_level': card_api_data.get('maxLevel', 14),
             'icon_url': card_api_data.get('iconUrls', {}).get('medium', ''),
             'elixir_cost': card_api_data.get('elixirCost', 0),
+            'rarity': rarity,
+            'card_type': card_type,
         }
 
 

@@ -35,10 +35,12 @@ def create_app(config_name=None):
     from routes.auth import auth_bp
     from routes.players import player_bp
     from routes.cards import cards_bp
-    
+    from routes.roast import roast_bp
+    from services.roast_service import generate_roast    
     app.register_blueprint(auth_bp)
     app.register_blueprint(player_bp)
     app.register_blueprint(cards_bp)
+    app.register_blueprint(roast_bp)
     
     # Root route
     @app.route('/')
@@ -50,7 +52,8 @@ def create_app(config_name=None):
             'endpoints': {
                 'auth': '/api/auth',
                 'players': '/api/players',
-                'cards': '/api/cards'
+                'cards': '/api/cards',
+                'roast': '/api/roast'
             }
         })
     
@@ -188,7 +191,6 @@ def create_app(config_name=None):
                 print(f"Error seeding cards: {str(e)}")
     
     return app
-
 
 if __name__ == '__main__':
     # Get environment

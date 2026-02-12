@@ -376,4 +376,116 @@
   color: var(--primary-color);
 }
 
+/* Analysis List Item Styling */
+.analysis-list li {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 6px;
+  border-left: 3px solid var(--primary-color);
+}
+
+.analysis-list li strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.analysis-list li p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.severity {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-left: 8px;
+}
+
+.severity.high {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.severity.medium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.severity.low {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.suggestion-detail {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.suggestion-detail strong {
+  display: inline;
+  margin-right: 8px;
+}
+
 @media (max-width: 768px) { .dashboard-header { flex-direction: column; align-items: flex-start; } .metrics-grid { grid-template-columns: repeat(2, 1fr); } .deck-cards-grid { grid-template-columns: repeat(2, 1fr); } .analysis-list { grid-template-columns: 1fr; } }
+
+/* Roast Section Styling */
+.roast-section {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 152, 31, 0.1) 100%);
+  border: 2px solid #ff6b6b;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.roast-section h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  color: #ff6b6b;
+}
+
+.roast-section p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid #ff6b6b;
+}
+
+.roast-section button {
+  padding: 10px 20px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.roast-section button:hover {
+  background: #ff5555;
+  transform: scale(1.05);
+}
+
+.roast-section button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}

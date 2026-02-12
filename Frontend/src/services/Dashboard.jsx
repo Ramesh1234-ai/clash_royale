@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { playerAPI } from './api';
+import { playerAPI, roastAPI } from './api';
 import './dashboard.css';
 
 function Dashboard() {
@@ -10,6 +10,8 @@ function Dashboard() {
   const [error, setError] = useState('');
   const [player, setPlayer] = useState(null);
   const [analysis, setAnalysis] = useState(null);
+  const [roasting, setRoasting] = useState(false);
+  const [roastMessage, setRoastMessage] = useState(null);
 
   useEffect(() => {
     if (!playerTag) return;
@@ -47,6 +49,22 @@ function Dashboard() {
 
     fetchData();
   }, [playerTag]);
+
+  const handleRoast = async () => {
+    setRoasting(true);
+    setRoastMessage(null);
+    try {
+      const data = await roastAPI.generateRoast(playerTag, 'fun');
+      if (data && data.data) {
+        setRoastMessage(data.data.roast);
+      }
+    } catch (err) {
+      console.error('Error generating roast:', err);
+      setRoastMessage('Failed to generate roast. Try again!');
+    } finally {
+      setRoasting(false);
+    }
+  };
 
   if (loading) return <div className="dashboard-loading">Loading...</div>;
   if (error) return (
@@ -91,8 +109,8 @@ function Dashboard() {
                 {/* Card Image */}
                 <div className="card-image-container">
                   {card.iconUrls && card.iconUrls.medium ? (
-                    <img 
-                      src={card.iconUrls.medium} 
+                    <img
+                      src={card.iconUrls.medium}
                       alt={card.name}
                       className="card-image"
                       onError={(e) => {
@@ -103,7 +121,7 @@ function Dashboard() {
                     <div className="card-image-placeholder">No Image</div>
                   )}
                 </div>
-                
+
                 {/* Card Info */}
                 <div className="card-info">
                   <h4>{card.name}</h4>
@@ -125,17 +143,17 @@ function Dashboard() {
         ) : (
           <div className="deck-unavailable">
             <p>📌 Deck data not currently available for this player</p>
-            <p style={{fontSize: '0.9rem', color: '#666', marginTop: '10px'}}>
-              <strong>Why?</strong> The Clash Royale API key needs to be configured with your server's IP address(es) to fetch deck information. 
-              <br/><br/>
+            <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '10px' }}>
+              <strong>Why?</strong> The Clash Royale API key needs to be configured with your server's IP address(es) to fetch deck information.
+              <br /><br />
               <strong>To fix this:</strong>
-              <ol style={{marginLeft: '20px', marginTop: '8px'}}>
+              <ol style={{ marginLeft: '20px', marginTop: '8px' }}>
                 <li>Go to <a href="https://developer.clashroyale.com/" target="_blank" rel="noopener noreferrer">developer.clashroyale.com</a></li>
                 <li>Click on your API key</li>
                 <li>Add your server IP to the "Allowed IPs" list</li>
                 <li>Or create a new key without IP restrictions (for testing)</li>
               </ol>
-              <strong style={{marginTop: '15px', display: 'block'}}>Alternative:</strong> View the player's card collection below instead
+              <strong style={{ marginTop: '15px', display: 'block' }}>Alternative:</strong> View the player's card collection below instead
             </p>
           </div>
         )}
@@ -145,7 +163,7 @@ function Dashboard() {
       {player && !player.currentDeck && player.cards && player.cards.length > 0 && (
         <section className="card-collection-section">
           <h3>📚 All Cards Collection</h3>
-          <p style={{color: 'var(--text-secondary)', marginBottom: '15px'}}>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '15px' }}>
             Since the current deck isn't available, here's the player's complete card collection:
           </p>
           <div className="deck-cards-grid">
@@ -154,8 +172,8 @@ function Dashboard() {
                 {/* Card Image */}
                 <div className="card-image-container">
                   {card.iconUrls && card.iconUrls.medium ? (
-                    <img 
-                      src={card.iconUrls.medium} 
+                    <img
+                      src={card.iconUrls.medium}
                       alt={card.name}
                       className="card-image"
                       onError={(e) => {
@@ -166,12 +184,12 @@ function Dashboard() {
                     <div className="card-image-placeholder">No Image</div>
                   )}
                 </div>
-                
+
                 {/* Card Info */}
                 <div className="card-info">
                   <h4>{card.name}</h4>
                   <div className="card-stats">
-                    <span className="stat">💎 Lvl: {card.level}</span>
+                    {card.maxLevel && <span className="stat">💎 Max Lvl: {card.maxLevel}</span>}
                     <span className="stat">⚡ {card.elixirCost}</span>
                   </div>
                   <div className="card-details">
@@ -224,8 +242,8 @@ function Dashboard() {
               <div key={index} className={`support-card rarity-${card.rarity}`}>
                 <div className="card-image-container small">
                   {card.iconUrls && card.iconUrls.medium ? (
-                    <img 
-                      src={card.iconUrls.medium} 
+                    <img
+                      src={card.iconUrls.medium}
                       alt={card.name}
                       className="card-image"
                       onError={(e) => {
@@ -257,8 +275,8 @@ function Dashboard() {
             <div className={`favorite-card rarity-${player.currentFavouriteCard.rarity}`}>
               <div className="card-image-container large">
                 {player.currentFavouriteCard.iconUrls && player.currentFavouriteCard.iconUrls.medium ? (
-                  <img 
-                    src={player.currentFavouriteCard.iconUrls.medium} 
+                  <img
+                    src={player.currentFavouriteCard.iconUrls.medium}
                     alt={player.currentFavouriteCard.name}
                     className="card-image"
                     onError={(e) => {
@@ -295,15 +313,47 @@ function Dashboard() {
             <div className="analysis-list">
               <div>
                 <h4>Strengths</h4>
-                <ul>{(analysis.strengths || []).map((s, i) => <li key={i}>{s}</li>)}</ul>
+                <ul>
+                  {(analysis.strengths || []).map((s, i) => (
+                    <li key={i}>
+                      <strong>{s.title || s.category}</strong>
+                      {s.description && <p>{s.description}</p>}
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div>
                 <h4>Weaknesses</h4>
-                <ul>{(analysis.weaknesses || []).map((w, i) => <li key={i}>{w}</li>)}</ul>
+                <ul>
+                  {(analysis.weaknesses || []).map((w, i) => (
+                    <li key={i}>
+                      <strong>{w.title || w.category}</strong>
+                      {w.severity && <span className={`severity ${w.severity}`}>{w.severity}</span>}
+                      {w.description && <p>{w.description}</p>}
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div>
                 <h4>Suggestions</h4>
-                <ul>{(analysis.suggestions || []).map((sug, i) => <li key={i}>{sug}</li>)}</ul>
+                <ul>
+                  {(analysis.suggestions || []).map((sug, i) => (
+                    <li key={i}>
+                      <strong>{sug.type || sug.title}</strong>
+                      {sug.reason && <p>{sug.reason}</p>}
+                      {sug.consider_adding && Array.isArray(sug.consider_adding) && (
+                        <p className="suggestion-detail">
+                          <strong>Consider adding:</strong> {sug.consider_adding.join(', ')}
+                        </p>
+                      )}
+                      {sug.consider_removing && Array.isArray(sug.consider_removing) && (
+                        <p className="suggestion-detail">
+                          <strong>Consider removing:</strong> {sug.consider_removing.join(', ')}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </>
@@ -311,6 +361,18 @@ function Dashboard() {
           <p>No analysis available for this player yet.</p>
         )}
       </section>
+
+      <button onClick={handleRoast} disabled={roasting}>
+        {roasting ? '🔥 Generating Roast...' : '🔥 Roast Me'}
+      </button>
+
+      {roastMessage && (
+        <section className="roast-section">
+          <h3>🔥 Your Roast</h3>
+          <p>{roastMessage}</p>
+          <button onClick={() => setRoastMessage(null)}>Dismiss</button>
+        </section>
+      )}
     </div>
   );
 }

@@ -42,11 +42,18 @@ class PlayerService:
             (datetime.utcnow() - player.last_fetched).total_seconds() > cache_duration
         )
         
+        extra_api_fields = {}
+        
         if should_fetch:
             # Fetch from API
             api_service = get_api_service()
             api_data = api_service.get_player(player_tag)
             player_data = api_service.parse_player_data(api_data)
+            
+            # Store extra fields from API
+            extra_api_fields = {
+                'current_favourite_card': player_data.get('current_favourite_card')
+            }
             
             # Update or create player
             if player is None:
@@ -75,7 +82,14 @@ class PlayerService:
             if player_data.get('current_deck'):
                 PlayerService._process_player_deck(player, player_data['current_deck'])
         
-        return player.to_dict()
+        # Get player dict
+        player_dict = player.to_dict()
+        
+        # Add extra API fields if available
+        if extra_api_fields.get('current_favourite_card'):
+            player_dict['currentFavouriteCard'] = extra_api_fields['current_favourite_card']
+        
+        return player_dict
     
     @staticmethod
     def _process_player_deck(player: Player, deck_data: List[Dict]) -> Deck:
@@ -89,19 +103,46 @@ class PlayerService:
         Returns:
             Deck: Created or existing deck object
         """
-        # Extract card IDs and calculate average elixir
-        card_ids = []
+        # First, ensure all cards exist in database by syncing if needed
+        from services.clash_royale import get_api_service
+        
+        api_service = get_api_service()
+        api_cards = api_service.get_cards()
+        
+        # Map card IDs from API to database, creating cards if needed
+        card_map = {}  # Maps API card_id to database Card object
         total_elixir = 0
         
         for card_data in deck_data:
-            card_id = card_data.get('id')
-            card = Card.query.filter_by(card_id=card_id).first()
+            api_card_id = card_data.get('id')
+            card = Card.query.filter_by(card_id=api_card_id).first()
+            
+            # If card doesn't exist, try to create it from API data
+            if not card:
+                # Find the card data from the full API cards list
+                api_card_data = next((c for c in api_cards if c.get('id') == api_card_id), None)
+                if api_card_data:
+                    parsed_card = api_service.parse_card_data(api_card_data)
+                    # Ensure rarity is lowercase for database
+                    rarity = parsed_card.get('rarity', 'common').lower()
+                    card = Card(
+                        card_id=parsed_card['card_id'],
+                        name=parsed_card['name'],
+                        card_type=parsed_card['card_type'],
+                        rarity=rarity,
+                        elixir_cost=parsed_card['elixir_cost'],
+                        max_level=parsed_card.get('max_level', 14),
+                        icon_url=parsed_card.get('icon_url', '')
+                    )
+                    db.session.add(card)
+                    db.session.flush()  # Get the card ID
             
             if card:
-                card_ids.append(card.id)
+                card_map[len(card_map)] = card
                 total_elixir += card.elixir_cost
         
-        # Generate deck hash
+        # Generate deck hash from card IDs
+        card_ids = [card.id for card in card_map.values()]
         deck_hash = Deck.generate_hash(card_ids)
         avg_elixir = round(total_elixir / len(card_ids), 2) if card_ids else 0
         
