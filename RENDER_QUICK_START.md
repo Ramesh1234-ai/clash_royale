@@ -16,7 +16,7 @@ Visit [https://dashboard.render.com/](https://dashboard.render.com/) and:
    - **Root Directory**: `backend`
    - **Runtime**: Python 3
    - **Build**: `pip install -r requirements.txt`
-   - **Start**: `gunicorn -w 4 -b 0.0.0.0:$PORT wsgi:app`
+   - **Start**: `gunicorn -w 1 -b 0.0.0.0:$PORT wsgi:app`
    - **Plan**: Free
 
 4. Click **"Create Web Service"**

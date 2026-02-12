@@ -36,7 +36,7 @@ services:
     env: python
     plan: free
     buildCommand: cd backend && pip install -r requirements.txt
-    startCommand: cd backend && gunicorn -w 4 -b 0.0.0.0:$PORT wsgi:app
+    startCommand: cd backend && gunicorn -w 1 -b 0.0.0.0:$PORT wsgi:app
     envVars:
       - key: FLASK_ENV
         value: production
