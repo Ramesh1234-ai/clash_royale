@@ -79,7 +79,11 @@ class ClashRoyaleAPIService:
         except requests.exceptions.ConnectionError:
             raise ClashRoyaleAPIError("Failed to connect to Clash Royale API")
         except requests.exceptions.RequestException as e:
-            raise ClashRoyaleAPIError(f"API request failed: {str(e)}")
+            # Log the full error for debugging, but don't expose sensitive details to client
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Clash Royale API request failed: {str(e)}")
+            raise ClashRoyaleAPIError("Clash Royale API request failed. Please try again later.")
     
     @staticmethod
     def format_player_tag(tag: str) -> str:
