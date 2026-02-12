@@ -31,6 +31,13 @@ def create_app(config_name=None):
     CORS(app, origins=app.config['CORS_ORIGINS'], supports_credentials=True)
     jwt = JWTManager(app)
     
+    # Create database tables on startup
+    with app.app_context():
+        try:
+            db.create_all()
+        except Exception as e:
+            print(f'Warning: Failed to create database tables: {e}')
+    
     # Register blueprints
     from routes.auth import auth_bp
     from routes.players import player_bp
