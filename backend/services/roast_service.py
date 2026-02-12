@@ -1,15 +1,53 @@
 from dotenv import load_dotenv
 import os
-from groq import Groq
+import logging
 
 load_dotenv()
+logger = logging.getLogger(__name__)
 
-# Create client ONCE (not every function call)
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+# Lazy-load Groq client to avoid import-time failures
+_groq_client = None
+_groq_import_error = None
+
+try:
+    from groq import Groq
+except ImportError as e:
+    _groq_import_error = str(e)
+    logger.warning("Groq not installed: %s", e)
+    Groq = None
+
+
+def _get_groq_client():
+    """Get or create Groq client lazily at runtime."""
+    global _groq_client, _groq_import_error
+    
+    if Groq is None:
+        return None
+    
+    if _groq_client is not None:
+        return _groq_client
+    
+    api_key = os.getenv("GROQ_API_KEY")
+    if not api_key:
+        logger.warning("GROQ_API_KEY not set; roast service will be unavailable")
+        return None
+    
+    try:
+        _groq_client = Groq(api_key=api_key)
+        return _groq_client
+    except Exception as e:
+        _groq_import_error = str(e)
+        logger.warning("Failed to initialize Groq client: %s", e)
+        return None
 
 
 def generate_roast(player_data, intensity="fun"):
     try:
+        client = _get_groq_client()
+        if client is None:
+            # Fallback response if Groq is unavailable
+            return "Chat is lagging, servers cooked 💀 Try again."
+        
         wins = player_data.get("wins", 0)
         losses = player_data.get("losses", 0)
         trophies = player_data.get("trophies", 0)
