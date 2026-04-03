@@ -1,12 +1,18 @@
 # Environment variables - contains sensitive API keys and credentials
-.env
-
+.env.example
+output.txt
 # Backend directory
-backend/
-
+backend/__pycache__
+backend/instance
+backend/venv/
+backend/.env
+backend/setup.sh
+backend/setup.bat
+backend/Dockerfile
+backend/routes/__pycache__
+backend/services/__pycache__
 # Output files
 output.txt
-
 # Python
 __pycache__/
 *.py[cod]
@@ -18,15 +24,23 @@ venv/
 *.egg-info/
 dist/
 build/
-
+instance/
 # Node/Frontend
 node_modules/
 dist/
 .vite/
-
+.venv
+Frontend/.vercel
+Frontend/dist/
+Frontend/node_modules/
+Frontend/.env
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+deploy_local.bat
+deploy_local.py
+deploy_local.sh
+render.yaml

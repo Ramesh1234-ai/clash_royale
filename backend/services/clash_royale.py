@@ -17,16 +17,16 @@ class ClashRoyaleAPIService:
     
     def __init__(self, api_key: str = None, base_url: str = None, timeout: int = 10):
         """
-        Initialize the API service using RoyaleAPI proxy (bypasses IP restrictions)
+        Initialize the API service
         
         Args:
             api_key: Clash Royale API key
-            base_url: Base URL for the API (defaults to RoyaleAPI proxy)
+            base_url: Base URL for the API
             timeout: Request timeout in seconds
         """
         self.api_key = (api_key or current_app.config.get('CLASH_ROYALE_API_KEY', '')).strip()
-        # Use RoyaleAPI proxy which bypasses IP restrictions but still needs API key
-        self.base_url = base_url or 'https://proxy.royaleapi.dev/v1'
+        # Use official Clash Royale API (no proxy)
+        self.base_url = base_url or 'https://api.clashroyale.com/v1'
         self.timeout = timeout or current_app.config.get('CLASH_ROYALE_API_TIMEOUT', 10)
         
         if not self.api_key:
