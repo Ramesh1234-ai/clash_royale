@@ -2,15 +2,15 @@
 .env.example
 output.txt
 # Backend directory
-backend/__pycache__
+backend/__pycache__/
 backend/instance
 backend/venv/
 backend/.env
 backend/setup.sh
 backend/setup.bat
 backend/Dockerfile
-backend/routes/__pycache__
-backend/services/__pycache__
+backend/routes/__pycache__/
+backend/services/__pycache__/
 # Output files
 output.txt
 # Python
@@ -20,7 +20,7 @@ __pycache__/
 *.so
 .Python
 env/
-venv/
+.venv/
 *.egg-info/
 dist/
 build/
@@ -30,7 +30,7 @@ node_modules/
 dist/
 .vite/
 .venv
-Frontend/.vercel
+Frontend/.vercel/
 Frontend/dist/
 Frontend/node_modules/
 Frontend/.env
