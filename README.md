@@ -27,6 +27,3 @@ Frontend/    # UI (JS, CSS)
 2. Get a Clash Royale API key from [developer.clashroyale.com](https://developer.clashroyale.com)
 3. Install backend dependencies and add your API key (e.g. via a `.env` file)
 4. Run the backend, then open the frontend
-
-## License
-Not specified.
